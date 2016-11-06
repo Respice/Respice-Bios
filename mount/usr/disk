@@ -1,0 +1,11 @@
+read C:\ D:\ Z:\
+
+if exist show DISK else hide DISK # Ignore this its too simple.
+find \*\ in \* # Wildcard to find other disks
+
+if \*\ in \* mount E:\ A:\ K:\ O:\ P:\ Q:\ F:\
+
+if \*\ equalto "network//share" mount Z:\*\
+if \*\ equalto "disk_read" mount D:\*\**
+
+return disk
