@@ -1,0 +1,5 @@
+if data.inflow(exists(NAME)) replace CONTENT {
+;; NULLPART EXIST HIDE ;; ;;@replaceChdrData@@;
+place " " in NAME |/ HIDE **
+
+if data.overwrite NAME |/ NAME = OLD |/ IGNORE NAME return if
