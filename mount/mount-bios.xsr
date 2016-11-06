@@ -1,0 +1,49 @@
+# Define System
+global System() {
+    System = SYSTEM_HARDWARE_MOUNT;
+    Imports() {
+        dbp = System("_CORES");
+        rst = System("_RANDOM_ACCESS_MEMORY");
+        dsk = System("_DISK");
+    }
+}
+
+if (!dsk) return System("_UNBOOTABLE_NODISK");
+if (!dbp || dbp.ngx) return System("_NOMOUNTCPU_UNSUPPORTED");
+if (dbp.rate =< "2100000000") return System("_CPU_OUTDATED"); # Needs more than 2.1 Ghz to run
+
+# Check motherboard mount
+define mbt() {
+    System = require(global.System); # Need to recall above global.
+    
+    # Check RAM
+    global chipSet() {
+        chip = System.tickSpeed;
+        fold = chip.loopRound;
+        
+        fold until (rst("OUT_OF_MEMORY"));
+        
+        rst.data = chip.lastTick * 1.5 (fold);
+    }
+    
+    # Check CPU
+    global cbrMount() {
+        spd = System.calculate;
+        mpu = System.openProgram;
+        
+        # Minumum 2.1 Ghz Single
+        spd(2540 * mpu("self_test") / 1.33);
+        
+        cbr = spd.spd[mpu.number]
+    }
+    
+    # Mount all
+    System("_MOUNT_RAM_" global.chipSet());
+    System("_MOUNT_CPU_" global.cbrMount());
+}
+
+if (!mbt) return NULLENTRY # Doubt it will happen but have to make sure just in case
+
+global.exportName = mount-bios;
+
+return global.globalsExists(defineExists).globals();
