@@ -1,0 +1,12 @@
+inc_o /perf/intepretx16.b # 16 bit handler
+inc_o /perf/true.b # True statement handler
+inc_o /perf/false.b # False statement handler
+
+rewr /perf/intepretx16.b >> intepretx16 global()
+rewr /perf/true.b >> true global()
+rewr /perf/false.b >> false global()
+
+intepretx16.arg(1=1, result) return global() true ? false []
+
+if not (1[2]) kill()
+
